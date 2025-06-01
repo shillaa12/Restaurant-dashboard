@@ -24,10 +24,17 @@ kmeans = KMeans(n_clusters=3, random_state=42)
 df_clean["cluster"] = kmeans.fit_predict(X_scaled)
 
 # Sidebar Navigation
-st.sidebar.title("🍽️ Restaurant Clustering")
-menu = st.sidebar.radio("Navigasi", ["Background", "Data Visualization", "Clustering", "Restaurants By Cluster", "Profile"])
+with st.sidebar:
+    st.markdown("## 🍽️ **Restaurant Clustering**")
+    menu = st.radio(
+        "Navigasi",
+        ["📘 Background", "📊 Data Visualization", "⭐ Clustering", "📂 Restaurants By Cluster", "👤 Profile"],
+        label_visibility="collapsed",
+        index=0
+    )
 
-if menu == "Background":
+
+if menu == "📘 Background":
     st.title("📘 Background")
     st.markdown("""
     Dashboard ini dibuat untuk mengelompokkan restoran berdasarkan fitur seperti lokasi, harga, dan layanan online.
@@ -36,7 +43,7 @@ if menu == "Background":
     **Tujuan:** Membantu analisis segmen restoran di berbagai daerah.
     """)
 
-elif menu == "Data Visualization":
+elif menu == "📊 Data Visualization":
     st.title("📊 Data Visualization")
     st.dataframe(df.head())
 
@@ -48,8 +55,8 @@ elif menu == "Data Visualization":
     fig2 = px.box(df, x="location", y="cost_for_two", points="outliers", color="location")
     st.plotly_chart(fig2)
 
-elif menu == "Clustering":
-    st.title("🌐 Clustering Result (KMeans)")
+elif menu == "⭐ Clustering":
+    st.title("⭐ Clustering Result (KMeans)")
 
     from sklearn.decomposition import PCA
     pca = PCA(n_components=2)
@@ -62,12 +69,12 @@ elif menu == "Clustering":
                       color_discrete_sequence=px.colors.qualitative.Set2)
     st.plotly_chart(fig3)
 
-elif menu == "Restaurants By Cluster":
-    st.title("🍴 Restaurants By Cluster")
+elif menu == "📂 Restaurants By Cluster":
+    st.title("📂 Restaurants By Cluster")
     selected_cluster = st.selectbox("Pilih Cluster:", sorted(df_clean["cluster"].unique()))
     st.dataframe(df_clean[df_clean["cluster"] == selected_cluster][["nama_restoran", "location", "cost_for_two", "rating"]])
 
-elif menu == "Profile":
+elif menu == "👤 Profile":
     st.title("👤 Profile")
     st.markdown("""
     **Nama:** [Tasya Noor Azhila]  
@@ -75,3 +82,4 @@ elif menu == "Profile":
     **Mata Kuliah:** Data Mining  
     **Proyek:** Restaurant Clustering Dashboard
     """)
+
